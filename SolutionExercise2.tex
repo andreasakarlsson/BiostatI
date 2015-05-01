@@ -1,0 +1,277 @@
+\documentclass[12pt,a4paper,twoside]{article}
+%\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage[all,cmtip]{xy}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usetikzlibrary{shapes}
+\usepackage{enumitem}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[LO,RE]{Biostat I, week 2, April 2015}
+
+\begin{document}
+
+\section*{Solutions: Exercise 2}
+
+\begin{enumerate}[label=\bfseries Q\arabic*.]
+\item %Q1
+  \begin{equation*}
+    \left.\begin{aligned}
+        FPR &= 0.01, \\
+        FPR + TNR &= 1,\\
+        \Pr(\text{All negative} \mid \text{no drug}) &= TNR_{1} \cdot TNR_{2} \cdot
+        ...  \cdot TNR_{100}
+      \end{aligned}
+    \right\}
+    0.99^{100} = 0.37
+  \end{equation*}      
+  
+
+  $\Pr(\text{All negative} \mid \text{no drug}) = 0.37$.  Not so
+  surprising ($\Pr=0.63$) that some tests would be positive.
+
+\item %Q2
+  \begin{align*}
+    \text{Sensitivity (TPR)} = \frac{TP}{TP+FN} = \frac{80}{100} &= 0.80 \\
+    \text{Specificity (TNR)} = \frac{TN}{TN+FP} = \frac{400-8}{400} &= 0.98 \\
+    \text{False positive rate (FPR)} = \frac{FP}{TN+FP} = \frac{8}{400} &= 0.02 \\
+    \text{False negative rate (FNR)} = \frac{FN}{TP+FN} = \frac{20}{100} &= 0.20 \\
+  \end{align*}
+
+\item %Q3
+  \begin{align*}
+    \text{Sensitivity (TPR)} = \frac{TP}{TP+FN} = \frac{133}{133+1} &\approx 0.99 \\
+    \text{Specificity (TNR)} = \frac{TN}{TN+FP} = \frac{35}{35+12} &\approx 0.74 \\
+    \text{Positive predictive value (PPV)} = \frac{TP}{TP+FP} = \frac{133}{133+12} &\approx 0.92 \\
+    \text{Negative predictive value (NPV)} = \frac{TN}{TN+FN} = \frac{35}{35+1} &\approx 0.97 \\
+  \end{align*}
+
+\item %Q4
+  \begin{enumerate}
+  \item %Q4a
+    \begin{equation*}
+      \left.\begin{aligned}
+          \Pr(FN) &= FNR,\\
+          FNR + TPR &= 1
+        \end{aligned}
+      \right\}
+      \qquad 1-0.85 = 0.15
+    \end{equation*}      
+    
+  \item %Q4b
+    \begin{equation*}
+      \left.\begin{aligned}
+          \Pr(FP) &= FPR,\\
+          FPR + TNR &= 1
+        \end{aligned}
+      \right\}
+      \qquad 1-0.80 = 0.20
+    \end{equation*}      
+    
+  \item %Q4c
+    % Define style for prob tree
+    \tikzstyle{level 1}=[level distance=4cm, sibling distance=2cm]
+    \tikzstyle{level 2}=[level distance=4.5cm, sibling distance=1cm]
+    \tikzstyle{pop} = [text width=4em, text centered]
+    \tikzstyle{disease} = [ellipse, minimum width=70pt, align=center, minimum height=30pt]
+    \tikzstyle{dx} = [circle, minimum size=20pt]
+
+    \begin{tikzpicture}[grow=right, sloped]
+      \node[pop] {Random selection}
+      child {
+        node[disease, fill=green!20] {No Disease}
+        child {
+          node(TN)[dx, fill=green!20] {-}
+          node[right of=TN] {TN}
+          edge from parent
+          node[above] {$0.80$}
+        }
+        child {
+          node(FP)[dx, fill=red!20] {+}
+          node[right of=FP] {FP}
+          edge from parent
+          node[above] {$0.20$}
+        }
+        edge from parent
+        node[above] {$0.9975$}
+      }
+      child {
+        node[disease, fill=red!20] {Disease}
+        child {
+          node(FN)[dx, fill=green!20] {-}
+          node[right of=FN] {FN}
+          edge from parent
+          node[above] {$0.15$}
+        }
+        child {
+          node(TP)[dx, fill=red!20] {+}
+          node[right of=TP] {TP}
+          edge from parent
+          node[above] {$0.85$}
+        }
+        edge from parent
+        node[above] {$0.0025$}
+      };
+    \end{tikzpicture}    
+
+
+    \begin{align*}
+      \Pr(+) &= \underbrace{0.0025 \cdot 0.85}_{TP}
+               + \underbrace{0.9975 \cdot 0.20}_{FP},\\
+      \Pr(\text{Disease} \cap +) &= \underbrace{0.0025 \cdot 0.85}_{TP},\\
+      \Pr(\text{Disease} \mid +) &= PPV = \frac{\Pr(\text{Disease} \cap +)}{\Pr(+)} \approx 0.01
+    \end{align*}
+  \end{enumerate}
+
+\item %Q5
+  Well done if you solved this!
+  \tikzstyle{level 1}=[level distance=4cm, sibling distance=2cm]
+  \tikzstyle{level 2}=[level distance=4.5cm, sibling distance=1cm]
+  \tikzstyle{pop} = [text width=4em, text centered]
+  \tikzstyle{disease} = [ellipse, minimum width=70pt, align=center, minimum height=30pt]
+  \tikzstyle{dx} = [circle, minimum size=20pt]
+  
+  \begin{tikzpicture}[grow=right, sloped]
+    \node[pop] {Random selection}
+    child {
+      node[disease, fill=green!20] {No Disease}
+      child {
+        node(TN)[dx, fill=green!20] {-}
+        node[right of=TN] {TN}
+        edge from parent
+        node[above] {$0.98$}
+      }
+      child {
+        node(FP)[dx, fill=red!20] {+}
+        node[right of=FP] {FP}
+        edge from parent
+        node[above] {$0.02$}
+      }
+      edge from parent
+      node[above] {$1-p$}
+    }
+    child {
+      node[disease, fill=red!20] {Disease}
+      child {
+        node(FN)[dx, fill=green!20] {-}
+        node[right of=FN] {FN}
+        edge from parent
+        node[above] {$0.01$}
+      }
+      child {
+        node(TP)[dx, fill=red!20] {+}
+        node[right of=TP] {TP}
+        edge from parent
+        node[above] {$0.99$}
+      }
+      edge from parent
+      node[above] {$p$}
+    };
+  \end{tikzpicture}    
+  
+  \begin{enumerate}
+  \item Assume a prevalence ``p'', then: %Q5a
+    \begin{align*}
+      \Pr(+) &= \underbrace{p \cdot 0.99}_{TP} + 
+               \underbrace{(1-p) \cdot 0.02}_{FP},\\
+      \Pr(\text{Disease} \cap +) &= \underbrace{p \cdot 0.99}_{TP},\\
+      \Pr(\text{Disease} \mid +) &= \frac{\Pr(\text{Disease} \cap+)}
+                                   {\Pr(+)}
+    \end{align*}
+    Now can $\Pr(\text{Disease} \mid +) < 1\%$ ?
+    \begin{align*}
+      \Pr(\text{Disease} \mid +) = \frac{p \cdot 0.99}{p \cdot 0.99 + (1-p) \cdot 0.02} &< 0.01\\
+      \frac{0.01 \cdot 0.02}{0.01 \cdot 0.02 + 0.99 - 0.01 \cdot
+      0.99} \approx  \frac{204}{10^{6}} &< p
+    \end{align*}
+    So, yes, it is possible if the disease is more rare than 204 cases
+    in a million.
+
+  \item %Q5b   
+    The implication is that for rare diseases a test needs to have very high validity.
+  \end{enumerate}
+  
+\item %Q6
+
+  \begin{enumerate}
+    
+  \item %Q6a
+    Low sensitivity $\Rightarrow$ prevalence underestimated (if $FN > FP$).
+    
+  \item
+    Low specificity $\Rightarrow$ prevalence may be overestimated
+    (if $FP > FN$).	
+    
+    
+    
+    \tikzstyle{level 1}=[level distance=4.5cm, sibling distance=2cm]
+    \tikzstyle{level 2}=[level distance=3.5cm, sibling distance=1cm]
+    \tikzstyle{pop} = [text width=4em, text centered]
+    \tikzstyle{disease} = [ellipse, minimum width=70pt, align=center, minimum height=30pt]
+    \tikzstyle{dx} = [circle, minimum size=20pt]
+    
+    \begin{tikzpicture}[grow=right, sloped]
+      \node[pop] {Random selection}
+      child {
+        node[disease, fill=green!20] {No Disease}
+        child {
+          node(TN)[dx, fill=green!20] {-}
+          node[right of=TN] {TN}
+          edge from parent
+          node[above] {$0.98$}
+        }
+        child {
+          node(FP)[dx, fill=red!20] {+}
+          node[right of=FP] {FP}
+          edge from parent
+          node[above] {$0.02$}
+        }
+        edge from parent
+        node[above] {$0.79 \ \& \ 0.93$}
+      }
+      child {
+        node[disease, fill=red!20] {Disease}
+        child {
+          node(FN)[dx, fill=green!20] {-}
+          node[right of=FN] {FN}
+          edge from parent
+          node[above] {$0.20$}
+        }
+        child {
+          node(TP)[dx, fill=red!20] {+}
+          node[right of=TP] {TP}
+          edge from parent
+          node[above] {$0.80$}
+        }
+        edge from parent
+        node[above] {$0.21 \ \& \ 0.07$}
+      };
+    \end{tikzpicture}    
+
+  \item By the diagnostic test reported prevalence:
+    \begin{align*} %Why are we given the population size in the
+      % question? Can we remove that from the question?
+      \Pr(+)_{\text{First Pop}} = \underbrace{0.21 \cdot 0.80}_{TP} + 
+      \underbrace{0.79 \cdot 0.02}_{FP} &\approx 0.18,\\
+      \Pr(+)_{\text{Second Pop}} = \underbrace{0.07 \cdot 0.80}_{TP} + 
+      \underbrace{0.93 \cdot 0.02}_{FP}
+                                        &\approx 0.075                                          
+    \end{align*}
+    
+  \item 
+    The true rate ratio as stated in the question, and the rate ratio
+    as reported by the diagnostic test:
+    \begin{align*} 
+      \text{Rate ratio}_{\text{ True}} &= \frac{0.21}{0.07} = 3,\\
+      \text{Rate ratio}_{\text{ Diagnostic test}} &= \frac{0.18}{0.075} \approx 2.4                                          \end{align*}
+  
+  \end{enumerate}
+\end{enumerate}
+\end{document}

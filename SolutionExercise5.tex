@@ -1,0 +1,124 @@
+\documentclass[12pt,a4paper,twoside]{article}
+% \usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage[all,cmtip]{xy}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usetikzlibrary{shapes}
+\usepackage{enumitem}
+
+\setlength{\headheight}{14.5pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[LO,RE]{Biostat I, week 2, April 2015}
+
+\begin{document}
+
+\section*{Solutions: Exercise 5}
+
+\begin{center}
+  \begin{tabular}{ l c c c }
+    & Not Exposed & Exposed & Total \\ \hline
+    Disease    & $d_{0}$        & $d_{1}$   & $d$     \\
+    No Disease & $h_{0}$        & $h_{1}$   & $h$     \\ \hline                 
+    Total      & $n_{0}$        & $n_{1}$   & $n$     \\
+  \end{tabular}
+\end{center}
+
+
+\begin{enumerate}[label=\bfseries Q\arabic*.]
+
+
+\item \ %Q1
+
+  \begin{center}
+    \begin{tabular}{ l c c }
+      & No coffee & $\le$ 6 cups \\ \hline
+      cases        & 122       & 19           \\            
+      Non-controls & 7768      & 2473         \\ \hline
+      Total        & 7890      & 2492         \\
+    \end{tabular}
+  \end{center}  
+  
+
+  \begin{enumerate}
+  \item
+    \begin{equation*}
+      RR= \frac{Risk_{ \le \text{ 6 cups}}}{Risk_{\text{No coffee}}}=\frac{\dfrac{19}{2473+19}}{\dfrac{122}{7768+122}}=0.493
+    \end{equation*}
+    
+  \item 
+    \begin{align*}
+      logRR&=log(RR)=log(0.493)=-0.707 \\
+      SE&=\sqrt{\frac{1}{d_{1}}-\frac{1}{n_{1}}+\frac{1}{d_{0}}-\frac{1}{n_{0}}}\\
+           &=\sqrt{\frac{1}{19}-\frac{1}{2492}+\frac{1}{122}-\frac{1}{7890}}=0.246\\       
+      \text{95 \% CI for }logRR &= logRR \pm 1.96 \cdot SE\\
+           &= -0.707 \pm 1.96 \cdot 0.246 = (-1.188, -0.226)\\
+      \text{CI for RR} &= e^{\mbox{\small$-0.707 \pm 1.96 \cdot 0.246$}}=(0.305, 0.798)
+    \end{align*}
+  \item      
+    Very similar to published \underline{age adjusted} RR (of 0.49
+    (0.30 to 0.80)), suggesting no confounding by age.
+  \end{enumerate}
+
+\item %Q2
+  \begin{enumerate}
+  \item
+    \begin{equation*}
+      OR= \frac{Odds_{\text{Highest exposure}}}{Odds_{\text{Lowest
+            exposure}}}
+      =\frac{\dfrac{25}{163-25}}{\dfrac{16}{163-16}}=1.664
+    \end{equation*}
+    
+  \item 
+    \begin{align*}
+      logOR                     & =log(OR)=log(1.664)=0.509                                                 \\
+      SE                        & =\sqrt{\frac{1}{d_{1}}+\frac{1}{h_{1}}+\frac{1}{d_{0}}+\frac{1}{h_{0}}}   \\
+                                & =\sqrt{\frac{1}{25}+\frac{1}{163-25}+\frac{1}{16}+\frac{1}{163-16}}=0.341 \\       
+      \text{95 \% CI for }logOR & = logOR \pm 1.96 \cdot SE                                                 \\
+                                & = 0.509 \pm 1.96 \cdot 0.341 = (-0.160, 1.179)                            \\
+      \text{CI for OR}          & = e^{\mbox{\small$-0.509 \pm 1.96 \cdot 0.341$}}=(0.85, 3.25)
+    \end{align*}
+  \item
+    Published table reports crude HR of 1.7 (0.9, 3.3), very similar to
+    our OR. However, adjusted HR is different (2.2) so there was confounding by the adjustment factors.
+  \end{enumerate}
+  
+\item \
+  
+  \begin{center}
+    \begin{tabular}{ l c c }
+    & 0-9 years & 13+ years \\ \hline
+      Cases    & 685       & 208       \\
+    Controls & 512       & 122       \\                  
+  \end{tabular}
+\end{center}
+
+
+  \begin{enumerate}
+  \item
+    \begin{equation*}
+      OR= \frac{Odds_{\text{Highest exposure}}}{Odds_{\text{Lowest
+            exposure}}}
+      =\frac{208/122}{685/512}=1.274
+    \end{equation*}
+    
+  \item 
+    \begin{align*}
+      logOR                     & =log(OR)=log(1.274)= 0.242                                                \\
+      SE                        & =\sqrt{\frac{1}{d_{1}}+\frac{1}{h_{1}}+\frac{1}{d_{0}}+\frac{1}{h_{0}}}   \\
+                                & =\sqrt{\frac{1}{208}+\frac{1}{122}+\frac{1}{685}+\frac{1}{512}}=0.128 \\       
+      \text{95 \% CI for }logOR & = logOR \pm 1.96 \cdot SE                                                 \\
+                                & = 0.242 \pm 1.96 \cdot 0.128 = (-0.009, 0.493)                            \\
+      \text{CI for OR}          & = e^{\mbox{\small$-0.242 \pm 1.96 \cdot 0.128$}}=(0.99, 1.64)
+    \end{align*}
+  \item
+    The result is not quite significant (CI includes 1.0.... just!)
+  \end{enumerate}
+\end{enumerate}
+\end{document}
